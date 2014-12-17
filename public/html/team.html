@@ -1,0 +1,12 @@
+<ul>
+	<li ng-repeat="member in members">
+		<div>
+			<a href="#/{{ member.name }}">{{ member.name }}</a>
+		</div>
+		<ul>
+			<li ng-repeat="task in member.tasks">
+				{{ task.title }}
+			</li>
+		</ul>
+	</li>
+</ul>
