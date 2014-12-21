@@ -1,4 +1,9 @@
 <ul>
+	<form ng-submit="createMember()">
+		Create new member:
+		<input type="text" ng-model="newMember" />
+	</form>
+
 	<li ng-repeat="member in members">
 		<div>
 			<a href="#/{{ member.name }}">{{ member.name }}</a>
