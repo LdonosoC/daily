@@ -1,7 +1,9 @@
 <ul>
 	<form ng-submit="createMember()">
 		Create new member:
-		<input type="text" ng-model="newMember" />
+		<input type="text" ng-model="member.name" />
+		<input type="text" ng-model="member.email" />
+		<button type="submit">Crear</button>
 	</form>
 
 	<li ng-repeat="member in members">

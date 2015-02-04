@@ -2,7 +2,18 @@ var Member = require('../models/member');
 
 var ctrl = {
 	create: function (req, res) {
+		var member = new Member({
+			name: req.body.name
+		});
 
+		member.save(function (err) {
+			if (err) {
+				console.log(err);
+				return res.end();
+			}
+
+			return res.json(member);
+		});
 	},
 
 	index: function (req, res) {
