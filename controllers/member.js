@@ -3,7 +3,8 @@ var Member = require('../models/member');
 var ctrl = {
 	create: function (req, res) {
 		var member = new Member({
-			name: req.body.name
+			name: req.body.name,
+			email: req.body.email
 		});
 
 		member.save(function (err) {
