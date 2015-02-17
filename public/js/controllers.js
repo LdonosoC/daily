@@ -18,4 +18,17 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
             // or server returns response with an error status.
         });
     };
+
+    $http.get('/member').success(function (members) {
+        $scope.members = members;
+    });
 });
+
+
+appControllers.controller('MemberCtrl', function ($scope, $http) {
+    $http.get('/member/Jose')
+    .success(function (member) {
+        $scope.member = member;
+    });
+});
+

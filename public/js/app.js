@@ -14,6 +14,7 @@ app.config(['$routeProvider', function($routeProvider) {
 			controller: 'TeamCtrl'
 		})
 		.when('/:member', {
-			templateUrl: '/html/member.html'
+			templateUrl: '/html/member.html',
+			controller: 'MemberCtrl'
 		});
 }]);
