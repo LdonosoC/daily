@@ -18,12 +18,27 @@ var ctrl = {
 	},
 
 	index: function (req, res) {
-		res.json([]);
+		Member.find({}, function (err, members) {
+			if (err) {
+				console.log('error', err);
+				return res.end();
+			}
+
+			res.json(members);
+		});
 	},
 
 	show: function (req, res) {
-		var member = req.params.member;
-		res.json({name: member});
+		var name = req.params.member;
+
+		Member.findOne({'name': name}, function (err, member) {
+			if (err) {
+				console.log('error', err);
+				return res.end();
+			}
+
+			res.json(member);
+		});
 	},
 
 	save: function (req, res) {
