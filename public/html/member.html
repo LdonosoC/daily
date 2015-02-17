@@ -1,5 +1,8 @@
 <h1>{{ member.name }}</h1>
-<h4>{{ member.email }}</h4>
+<form ng-submit="updateMember()">
+	<input type="text" ng-model="member.email" />
+	<button type="submit">Cambiar</button>
+</form>
 <ul>
 	<li>
 	</li>

@@ -34,5 +34,9 @@ appControllers.controller('MemberCtrl', function ($scope, $http, $routeParams) {
     .success(function (member) {
         $scope.member = member;
     });
+
+    $scope.updateMember = function () {
+        $http.post('/member/' + $routeParams.member, $scope.member);
+    };
 });
 
