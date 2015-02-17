@@ -43,20 +43,21 @@ var ctrl = {
 	},
 
 	save: function (req, res) {
-		var data = req.body;
+		var login = req.params.member;
+		var email = req.body.email;
 
-		var member = new Member({
-			name: data.name
-		});
-
-		member.save(function (err) {
+		Member.findOneAndUpdate({login: login}, {email: email}, function (err, member) {
 			if (err) {
-				console.log(err);
-				res.error(500);
+				console.log('error', err);
+				return res.status(500).end();
 			}
 
-			res.end(member._id);
-		});
+			if (!member) {
+				return res.status(404).end();
+			}
+
+			res.json(member);
+		})
 	},
 
 	delete: function (req, res) {
