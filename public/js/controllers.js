@@ -25,8 +25,9 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
 });
 
 
-appControllers.controller('MemberCtrl', function ($scope, $http) {
-    $http.get('/member/Jose')
+appControllers.controller('MemberCtrl', function ($scope, $http, $routeParams) {
+
+    $http.get('/member/' + $routeParams.member)
     .success(function (member) {
         $scope.member = member;
     });
