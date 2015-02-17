@@ -27,11 +27,10 @@ var ctrl = {
 	},
 
 	save: function (req, res) {
-		var member 	= req.params.member;
 		var data = req.body;
 
 		var member = new Member({
-			name: "Jose"
+			name: data.name
 		});
 
 		member.save(function (err) {
