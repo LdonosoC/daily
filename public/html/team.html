@@ -1,14 +1,15 @@
 <ul>
 	<form ng-submit="createMember()">
 		Create new member:
-		<input type="text" ng-model="member.name" />
-		<input type="text" ng-model="member.email" />
+		<input type="text" ng-model="member.name" placeholder="Name" />
+		<input type="text" ng-model="member.email" placeholder="Email" />
+		<input type="text" ng-model="member.login" placeholder="Login" />
 		<button type="submit">Crear</button>
 	</form>
 
 	<li ng-repeat="member in members">
 		<div>
-			<a href="#/{{ member.name }}">{{ member.name }}</a>
+			<a href="#/{{ member.login }}">{{ member.name }}</a>
 		</div>
 		<ul>
 			<li ng-repeat="task in member.tasks">

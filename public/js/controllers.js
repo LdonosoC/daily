@@ -8,9 +8,8 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
 
         $http.post('/member', $scope.member)
         .success(function(data, status, headers, config) {
-            console.log('ok', data);
-            // this callback will be called asynchronously
-            // when the response is available
+            $scope.showMembers();
+            $scope.member = {};
         })
         .error(function(data, status, headers, config) {
             console.log('error', data);
@@ -19,9 +18,13 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
         });
     };
 
-    $http.get('/member').success(function (members) {
-        $scope.members = members;
-    });
+    $scope.showMembers = function () {
+        $http.get('/member').success(function (members) {
+            $scope.members = members;
+        });
+    }
+
+    $scope.showMembers();
 });
 
 

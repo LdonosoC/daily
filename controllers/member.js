@@ -4,7 +4,8 @@ var ctrl = {
 	create: function (req, res) {
 		var member = new Member({
 			name: req.body.name,
-			email: req.body.email
+			email: req.body.email,
+			login: req.body.login
 		});
 
 		member.save(function (err) {
@@ -29,9 +30,9 @@ var ctrl = {
 	},
 
 	show: function (req, res) {
-		var name = req.params.member;
+		var login = req.params.member;
 
-		Member.findOne({'name': name}, function (err, member) {
+		Member.findOne({'login': login}, function (err, member) {
 			if (err) {
 				console.log('error', err);
 				return res.end();
