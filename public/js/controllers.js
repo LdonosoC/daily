@@ -27,7 +27,7 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
 });
 
 
-appControllers.controller('MemberCtrl', function ($scope, $http, $routeParams) {
+appControllers.controller('MemberCtrl', function ($scope, $http, $location, $routeParams) {
 
     $http.get('/member/' + $routeParams.member)
     .success(function (member) {
@@ -40,9 +40,15 @@ appControllers.controller('MemberCtrl', function ($scope, $http, $routeParams) {
 
     $scope.deleteMember = function (e) {
         e.preventDefault();
-        if (confirm('Seguro?')) {
-            $http.delete('/member/' + $routeParams.member);
+
+        if (false === confirm('Seguro?')) {
+            return;
         }
+
+        $http.delete('/member/' + $routeParams.member)
+        .success(function () {
+            $location.path('/');
+        });
     };
 });
 
