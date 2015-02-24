@@ -2,6 +2,15 @@ var Member = require('../models/member');
 
 var ctrl = {
 	create: function (req, res) {
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (true !== re.test(req.body.email)) {
+			return res.status(400).end();
+		}
+
+		if (true !== /^[a-z\d_]{4,15}$/i.test(req.body.login)) {
+			return res.status(400).end();
+		}
+
 		var query = Member.findOne();
 
 		query.or([

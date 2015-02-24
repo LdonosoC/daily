@@ -6,6 +6,9 @@
 		<input type="text" ng-model="member.login" placeholder="Login" />
 		<button type="submit">Crear</button>
 		<div ng-show="member.error !== undefined" >
+			<div ng-show="member.error == 400">
+				Error en los datos
+			</div>
 			<div ng-show="member.error == 409">
 				Ya creado
 			</div>
