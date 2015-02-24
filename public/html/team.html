@@ -5,6 +5,17 @@
 		<input type="text" ng-model="member.email" placeholder="Email" />
 		<input type="text" ng-model="member.login" placeholder="Login" />
 		<button type="submit">Crear</button>
+		<div ng-show="member.error !== undefined" >
+			<div ng-show="member.error == 409">
+				Ya creado
+			</div>
+			<div ng-show="member.error == 500">
+				Error del servidor
+			</div>
+			<div ng-show="member.error == 0">
+				Error desconocido
+			</div>
+		</div>
 	</form>
 
 	<li ng-repeat="member in members">

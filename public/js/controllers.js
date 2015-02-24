@@ -9,9 +9,7 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
             $scope.member = {};
         })
         .error(function(data, status, headers, config) {
-            if (status === 409) {
-                alert('ya existe');
-            }
+            $scope.member.error = status;
             // called asynchronously if an error occurs
             // or server returns response with an error status.
         });
