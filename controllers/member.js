@@ -2,19 +2,32 @@ var Member = require('../models/member');
 
 var ctrl = {
 	create: function (req, res) {
-		var member = new Member({
-			name: req.body.name,
-			email: req.body.email,
-			login: req.body.login
-		});
 
-		member.save(function (err) {
+		Member.findOne({email: req.body.email}, function (err, member) {
 			if (err) {
-				console.log(err);
-				return res.end();
+				console.log('error', err);
+				return res.status(500).end();
 			}
 
-			return res.json(member);
+			if (member) {
+				// ya existe!
+				return res.status(409).end();
+			}
+
+			var member = new Member({
+				name: req.body.name,
+				email: req.body.email,
+				login: req.body.login
+			});
+
+			member.save(function (err) {
+				if (err) {
+					console.log(err);
+					return res.end();
+				}
+
+				return res.status(201).json(member);
+			});
 		});
 	},
 
@@ -61,8 +74,20 @@ var ctrl = {
 	},
 
 	delete: function (req, res) {
-		var member = req.params.member;
-		res.json('member delete ' + member);
+		var login = req.params.member;
+
+		Member.findOneAndRemove({"login": login}, function (err, member) {
+			if (err) {
+				console.log('error', err);
+				return res.status(500).end();
+			}
+
+			if (!member) {
+				return res.status(404).end();
+			}
+
+			res.end();
+		})
 	},
 };
 

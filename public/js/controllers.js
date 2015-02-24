@@ -3,16 +3,15 @@ var appControllers = angular.module('appControllers', []);
 appControllers.controller('TeamCtrl', function ($scope, $http) {
 
     $scope.createMember = function () {
-        console.log('crear miembro');
-        console.log($scope.member);
-
         $http.post('/member', $scope.member)
         .success(function(data, status, headers, config) {
             $scope.showMembers();
             $scope.member = {};
         })
         .error(function(data, status, headers, config) {
-            console.log('error', data);
+            if (status === 409) {
+                alert('ya existe');
+            }
             // called asynchronously if an error occurs
             // or server returns response with an error status.
         });
@@ -37,6 +36,13 @@ appControllers.controller('MemberCtrl', function ($scope, $http, $routeParams) {
 
     $scope.updateMember = function () {
         $http.post('/member/' + $routeParams.member, $scope.member);
+    };
+
+    $scope.deleteMember = function (e) {
+        e.preventDefault();
+        if (confirm('Seguro?')) {
+            $http.delete('/member/' + $routeParams.member);
+        }
     };
 });
 
