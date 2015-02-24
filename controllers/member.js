@@ -2,8 +2,14 @@ var Member = require('../models/member');
 
 var ctrl = {
 	create: function (req, res) {
+		var query = Member.findOne();
 
-		Member.findOne({email: req.body.email}, function (err, member) {
+		query.or([
+			{ email: req.body.email },
+			{ login: req.body.login }
+		]);
+
+		query.exec(function (err, member) {
 			if (err) {
 				console.log('error', err);
 				return res.status(500).end();
