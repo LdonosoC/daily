@@ -1,6 +1,7 @@
 var app = require('./app');
 
 require('./routes/member');
+require('./routes/task');
 
 var server = app.listen(8282, function () {
   var host = server.address().address

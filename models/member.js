@@ -1,6 +1,4 @@
-
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/daily');
+var mongoose = require('../lib/mongoose');
 
 var Member = mongoose.model('Member', {
 	name: String,
