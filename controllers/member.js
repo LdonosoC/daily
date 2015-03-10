@@ -1,13 +1,13 @@
-var Member = require('../models/member');
+var Member  = require('../models/member');
+var is 		= require('../lib/is');
 
 var ctrl = {
 	create: function (req, res) {
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		if (true !== re.test(req.body.email)) {
+		if (true !== is.email(req.body.email)) {
 			return res.status(400).end();
 		}
 
-		if (true !== /^[a-z\d_]{4,15}$/i.test(req.body.login)) {
+		if (true !== is.username(req.body.login)) {
 			return res.status(400).end();
 		}
 
@@ -74,18 +74,37 @@ var ctrl = {
 		var login = req.params.member;
 		var email = req.body.email;
 
-		Member.findOneAndUpdate({login: login}, {email: email}, function (err, member) {
+		if (true !== is.email(email)) {
+			return res.status(400).end();
+		}
+
+		Member.findOne({email: email}, function (err, member) {
 			if (err) {
 				console.log('error', err);
 				return res.status(500).end();
 			}
 
-			if (!member) {
-				return res.status(404).end();
+			if (member) {
+				if (member.login === login) {
+					return res.end();
+				}
+
+				return res.status(409).end();
 			}
 
-			res.json(member);
-		})
+			Member.findOneAndUpdate({login: login}, {email: email}, function (err, member) {
+				if (err) {
+					console.log('error', err);
+					return res.status(500).end();
+				}
+
+				if (!member) {
+					return res.status(404).end();
+				}
+
+				res.json(member);
+			});
+		});
 	},
 
 	delete: function (req, res) {
