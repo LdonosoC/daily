@@ -1,5 +1,6 @@
 var Task 	= require('../models/task');
 var Member 	= require('../models/member');
+var Q 		= require('q');
 
 var ctrl = {
 	create: function (req, res) {
@@ -31,7 +32,32 @@ var ctrl = {
 	},
 
 	index: function (req, res) {
-		res.json([]);
+		var query, login, status;
+
+		query  	 = {};
+		login    = req.query.login || null;
+		status   = req.query.status || null;
+
+		if (login) {
+			login = Member.findOne({login: login}).exec();
+		}
+
+		Q.spread([login, status], function (member, status) {
+			if (member) {
+				query.member = member._id;
+			}
+
+			query.status = status;
+
+			Task.find(query, function (err, tasks) {
+				if (err) {
+					console.log('error', err);
+					return res.end();
+				}
+
+				res.json(tasks);
+			});
+		});
 	},
 
 	show: function (req, res) {
