@@ -78,12 +78,8 @@ var ctrl = {
 			return res.status(400).end();
 		}
 
-		Member.findOne({email: email}, function (err, member) {
-			if (err) {
-				console.log('error', err);
-				return res.status(500).end();
-			}
-
+		var member = Member.findOne({email: email}).exec();
+		member.then(function (member) {
 			if (member) {
 				if (member.login === login) {
 					return res.end();
@@ -92,19 +88,14 @@ var ctrl = {
 				return res.status(409).end();
 			}
 
-			Member.findOneAndUpdate({login: login}, {email: email}, function (err, member) {
-				if (err) {
-					console.log('error', err);
-					return res.status(500).end();
-				}
+			return Member.findOneAndUpdate({login: login}, {email: email}).exec();
+		}).then(function (member) {
+			if (!member) {
+				return res.status(404).end();
+			}
 
-				if (!member) {
-					return res.status(404).end();
-				}
-
-				res.json(member);
-			});
-		});
+			res.json(member);
+		})
 	},
 
 	delete: function (req, res) {
