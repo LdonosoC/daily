@@ -20,7 +20,10 @@ var ctrl = {
 			return task.savePromise();
 		}).then(function (task) {
 			return res.status(201).json(task);
-		});
+		}).then(null, function (err) {
+			console.log(err);
+			return res.status(500).end();
+		})
 	},
 
 	index: function (req, res) {
