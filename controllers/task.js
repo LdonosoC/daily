@@ -41,14 +41,9 @@ var ctrl = {
 
 			query.status = status;
 
-			Task.find(query, function (err, tasks) {
-				if (err) {
-					console.log('error', err);
-					return res.end();
-				}
-
-				res.json(tasks);
-			});
+			return Task.find(query).exec();
+		}).then(function (tasks) {
+			res.json(tasks);
 		});
 	},
 
