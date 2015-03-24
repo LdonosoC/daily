@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/joserobleda/daily",
   "dependencies": {
-    "express": "^4.10.4"
+    "express": "^4.10.4",
+    "slug": "^0.8.0"
   }
 }
