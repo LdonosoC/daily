@@ -56,6 +56,15 @@ var ctrl = {
 	},
 
 	show: function (req, res) {
+		var taskSlug = req.params.task;
+
+		var promise = Task.findOne({slug: taskSlug}).exec();
+
+		promise.then(function (task) {
+			res.json(task);
+		}, function (err) {
+			res.status(404).end();
+		});
 	},
 
 	save: function (req, res) {
