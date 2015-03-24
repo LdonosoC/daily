@@ -68,6 +68,43 @@ var ctrl = {
 	},
 
 	save: function (req, res) {
+		// 1. buscar que la tarea efectivamente exista
+		// 2. recuperamos el title
+		// 3. miramos el si ha cambiado el titulo
+		// 4. actualizamos el titulo
+		// 5. devolvemos
+		var taskSlug = req.params.task;
+
+		var promise = Task.findOne({slug: taskSlug}).exec();
+
+		promise.then(
+			// if task exists
+			function (task) {
+				var title = req.body.title;
+
+				if (title === task.title) {
+					return res.json(task);
+				}
+
+				task.title = title;
+				return task.savePromise();
+			},
+
+			// when task is not found
+			function (err) {
+				res.status(404).end();
+			}
+		).then(
+			// if tasks was updated successfully
+			function (task) {
+				res.json(task);
+			},
+
+			// when task cannot be saved
+			function (err) {
+				res.status(500).end();
+			}
+		);
 	},
 
 	delete: function (req, res) {
