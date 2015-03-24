@@ -1,6 +1,8 @@
 var Task 	= require('../models/task');
 var Member 	= require('../models/member');
 var Q 		= require('q');
+var slug 	= require('slug');
+var shortid	= require('shortid');
 
 var ctrl = {
 	create: function (req, res) {
@@ -12,8 +14,11 @@ var ctrl = {
 		var memberPromise = Member.findOne({login: req.body.login}).exec();
 
 		memberPromise.then(function (member) {
+			var taskSlug = slug(title + '-' + shortid.generate());
+
 			var task = new Task({
 				title: title,
+				slug: taskSlug.toLowerCase(),
 				member: member._id
 			});
 
