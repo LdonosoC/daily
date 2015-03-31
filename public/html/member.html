@@ -5,6 +5,7 @@
 </form>
 <a href="#" ng-click="deleteMember($event)">Eliminar</a>
 <ul>
-	<li>
+	<li ng-repeat="task in tasks">
+		<a href="#/task/{{ task.slug }}">{{ task.title }}</a>
 	</li>
 </ul>

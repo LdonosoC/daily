@@ -71,5 +71,43 @@ appControllers.controller('MemberCtrl', function ($scope, $http, $location, $rou
             $location.path('/');
         });
     };
+
+    $http.get('/task?login=' + $routeParams.member).success(function (tasks) {
+        $scope.tasks = tasks;
+    });
+});
+
+
+appControllers.controller('TaskCtrl', function ($scope, $http, $location, $routeParams) {
+    var taskSlug = $routeParams.task;
+    var task     = {};
+
+    $http.get('/task/' + taskSlug).then(function (res) {
+        task = res.data;
+
+        return $http.get('/member/' + task.member);
+    }).then(function (res) {
+        task.member = res.data;
+
+        // assign to scope
+        $scope.task = task;
+    });
+
+    $scope.updateTask = function () {
+        $http.post('/task/' + taskSlug, $scope.task);
+    };
+
+    $scope.deleteTask = function (e) {
+        e.preventDefault();
+
+        if (false === confirm('Seguro?')) {
+            return;
+        }
+
+        $http.delete('/task/' + taskSlug)
+        .success(function () {
+            $location.path('/' + task.member.login);
+        });
+    };
 });
 

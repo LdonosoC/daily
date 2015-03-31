@@ -59,8 +59,13 @@ var ctrl = {
 
 	show: function (req, res) {
 		var login = req.params.member;
+		var search = {login: login};
 
-		Member.findOne({'login': login}, function (err, member) {
+		if (login.length > 15) {
+			search = {_id: login};
+		}
+
+		Member.findOne(search, function (err, member) {
 			if (err) {
 				console.log('error', err);
 				return res.end();

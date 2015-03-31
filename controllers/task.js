@@ -108,6 +108,20 @@ var ctrl = {
 	},
 
 	delete: function (req, res) {
+		var taskSlug = req.params.task;
+
+		Task.findOneAndRemove({slug: taskSlug}, function (err, task) {
+			if (err) {
+				console.log(err);
+				return res.status(500).end();
+			}
+
+			if (!task) {
+				return res.status(404).end();
+			}
+
+			return res.end();
+		});
 	},
 };
 

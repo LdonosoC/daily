@@ -16,5 +16,9 @@ app.config(['$routeProvider', function($routeProvider) {
 		.when('/:member', {
 			templateUrl: '/html/member.html',
 			controller: 'MemberCtrl'
+		})
+		.when('/task/:task', {
+			templateUrl: '/html/task.html',
+			controller: 'TaskCtrl'
 		});
 }]);
