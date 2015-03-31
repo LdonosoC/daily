@@ -48,12 +48,14 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
 });
 
 
-appControllers.controller('MemberCtrl', function ($scope, $http, $location, $routeParams) {
-
-    $http.get('/member/' + $routeParams.member)
-    .success(function (member) {
-        $scope.member = member;
-    });
+appControllers.controller('MemberCtrl', function (
+    $scope,
+    $http,
+    $location,
+    $routeParams,
+    MemberSrvc
+) {
+    $scope.member = MemberSrvc.get({member: $routeParams.member});
 
     $scope.createTask = function () {
         $http.post('/task', {
@@ -92,16 +94,22 @@ appControllers.controller('MemberCtrl', function ($scope, $http, $location, $rou
 });
 
 
-appControllers.controller('TaskCtrl', function ($scope, $http, $location, $routeParams) {
+appControllers.controller('TaskCtrl', function (
+    $scope,
+    $http,
+    $location,
+    $routeParams,
+    MemberSrvc
+) {
     var taskSlug = $routeParams.task;
     var task     = {};
 
     $http.get('/task/' + taskSlug).then(function (res) {
         task = res.data;
 
-        return $http.get('/member/' + task.member);
-    }).then(function (res) {
-        task.member = res.data;
+        return MemberSrvc.get({member: task.member});
+    }).then(function (member) {
+        task.member = member;
 
         // assign to scope
         $scope.task = task;

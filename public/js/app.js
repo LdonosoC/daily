@@ -1,6 +1,8 @@
 var app = angular.module('dokifyApp', [
 	'ngRoute',
-	'appControllers'
+	'ngResource',
+	'appControllers',
+	'appServices'
 ]);
 
 app.run(function ($rootScope) {
