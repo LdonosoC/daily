@@ -55,6 +55,16 @@ appControllers.controller('MemberCtrl', function ($scope, $http, $location, $rou
         $scope.member = member;
     });
 
+    $scope.createTask = function () {
+        $http.post('/task', {
+            login: $routeParams.member,
+            title: $scope.task.title
+        }).success(function () {
+            $scope.showTasks();
+            $scope.task = {};
+        });
+    };
+
     $scope.updateMember = function () {
         $http.post('/member/' + $routeParams.member, $scope.member);
     };
@@ -72,9 +82,13 @@ appControllers.controller('MemberCtrl', function ($scope, $http, $location, $rou
         });
     };
 
-    $http.get('/task?login=' + $routeParams.member).success(function (tasks) {
-        $scope.tasks = tasks;
-    });
+    $scope.showTasks = function () {
+        $http.get('/task?login=' + $routeParams.member).success(function (tasks) {
+            $scope.tasks = tasks;
+        });
+    }
+
+    $scope.showTasks();
 });
 
 

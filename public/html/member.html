@@ -4,6 +4,11 @@
 	<button type="submit">Cambiar</button>
 </form>
 <a href="#" ng-click="deleteMember($event)">Eliminar</a>
+<hr />
+<form ng-submit="createTask()">
+	<input type="text" ng-model="task.title" />
+	<button type="submit">Crear</button>
+</form>
 <ul>
 	<li ng-repeat="task in tasks">
 		<a href="#/task/{{ task.slug }}">{{ task.title }}</a>
