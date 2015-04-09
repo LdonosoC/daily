@@ -1,6 +1,10 @@
 var appControllers = angular.module('appControllers', []);
 
-appControllers.controller('TeamCtrl', function ($scope, $http) {
+appControllers.controller('TeamCtrl', function (
+    $scope,
+    $http,
+    MemberSrvc
+) {
     $scope.member = {};
 
     var isEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -23,25 +27,24 @@ appControllers.controller('TeamCtrl', function ($scope, $http) {
             return alert('El login está mal');
         }
 
-        $http.post('/member', {
+        var promise = MemberSrvc.save({
             login: login,
             email: email,
             name: name
-        }).success(function(data, status, headers, config) {
+        }).$promise;
+
+        promise.then(function (member) {
             $scope.showMembers();
             $scope.member = {};
-        })
-        .error(function(data, status, headers, config) {
-            $scope.member.error = status;
+        }).catch(function (response) {
+            $scope.member.error = response.status;
             // called asynchronously if an error occurs
             // or server returns response with an error status.
         });
     };
 
     $scope.showMembers = function () {
-        $http.get('/member').success(function (members) {
-            $scope.members = members;
-        });
+        $scope.members = MemberSrvc.query();
     }
 
     $scope.showMembers();
@@ -53,22 +56,25 @@ appControllers.controller('MemberCtrl', function (
     $http,
     $location,
     $routeParams,
-    MemberSrvc
+    MemberSrvc,
+    TaskSrvc
 ) {
     $scope.member = MemberSrvc.get({member: $routeParams.member});
 
     $scope.createTask = function () {
-        $http.post('/task', {
+        var promise = TaskSrvc.save({
             login: $routeParams.member,
             title: $scope.task.title
-        }).success(function () {
+        }).$promise;
+
+        promise.then(function () {
             $scope.showTasks();
             $scope.task = {};
         });
     };
 
     $scope.updateMember = function () {
-        $http.post('/member/' + $routeParams.member, $scope.member);
+        MemberSrvc.save({member: $routeParams.member}, $scope.member);
     };
 
     $scope.deleteMember = function (e) {
@@ -78,16 +84,13 @@ appControllers.controller('MemberCtrl', function (
             return;
         }
 
-        $http.delete('/member/' + $routeParams.member)
-        .success(function () {
+        MemberSrvc.delete({member: $routeParams.member}).$promise.then(function () {
             $location.path('/');
         });
     };
 
     $scope.showTasks = function () {
-        $http.get('/task?login=' + $routeParams.member).success(function (tasks) {
-            $scope.tasks = tasks;
-        });
+        $scope.tasks = TaskSrvc.query({login: $routeParams.member});
     }
 
     $scope.showTasks();
@@ -99,15 +102,15 @@ appControllers.controller('TaskCtrl', function (
     $http,
     $location,
     $routeParams,
-    MemberSrvc
+    MemberSrvc,
+    TaskSrvc
 ) {
     var taskSlug = $routeParams.task;
-    var task     = {};
 
-    $http.get('/task/' + taskSlug).then(function (res) {
-        task = res.data;
+    var task = TaskSrvc.get({task: taskSlug});
 
-        return MemberSrvc.get({member: task.member});
+    task.$promise.then(function (task) {
+        return MemberSrvc.get({member: task.member}).$promise;
     }).then(function (member) {
         task.member = member;
 
@@ -116,7 +119,7 @@ appControllers.controller('TaskCtrl', function (
     });
 
     $scope.updateTask = function () {
-        $http.post('/task/' + taskSlug, $scope.task);
+        TaskSrvc.save({task: taskSlug}, $scope.task);
     };
 
     $scope.deleteTask = function (e) {
@@ -126,8 +129,9 @@ appControllers.controller('TaskCtrl', function (
             return;
         }
 
-        $http.delete('/task/' + taskSlug)
-        .success(function () {
+        var promise = TaskSrvc.delete({task: taskSlug}).$promise;
+
+        promise.then(function () {
             $location.path('/' + task.member.login);
         });
     };

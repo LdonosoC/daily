@@ -61,7 +61,9 @@ var ctrl = {
 		var promise = Task.findOne({slug: taskSlug}).exec();
 
 		promise.then(function (task) {
-			res.json(task);
+			setTimeout(function () {
+				res.json(task);
+			}, 10 * 1000);
 		}, function (err) {
 			res.status(404).end();
 		});
