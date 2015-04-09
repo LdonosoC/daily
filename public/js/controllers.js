@@ -3,8 +3,10 @@ var appControllers = angular.module('appControllers', []);
 appControllers.controller('TeamCtrl', function (
     $scope,
     $http,
-    MemberSrvc
+    MemberSrvc,
+    members
 ) {
+    $scope.members = members;
     $scope.member = {};
 
     var isEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -34,7 +36,7 @@ appControllers.controller('TeamCtrl', function (
         }).$promise;
 
         promise.then(function (member) {
-            $scope.showMembers();
+            $scope.members = MemberSrvc.query();
             $scope.member = {};
         }).catch(function (response) {
             $scope.member.error = response.status;
@@ -42,12 +44,6 @@ appControllers.controller('TeamCtrl', function (
             // or server returns response with an error status.
         });
     };
-
-    $scope.showMembers = function () {
-        $scope.members = MemberSrvc.query();
-    }
-
-    $scope.showMembers();
 });
 
 

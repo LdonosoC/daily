@@ -13,7 +13,12 @@ app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
 		.when('/', {
 			templateUrl: '/html/team.html',
-			controller: 'TeamCtrl'
+			controller: 'TeamCtrl',
+			resolve: {
+				members: function (MemberSrvc) {
+					return MemberSrvc.query().$promise;
+				}
+			}
 		})
 		.when('/:member', {
 			templateUrl: '/html/member.html',
