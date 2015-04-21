@@ -63,7 +63,7 @@ var ctrl = {
 		promise.then(function (task) {
 			setTimeout(function () {
 				res.json(task);
-			}, 10 * 1000);
+			}, 3 * 1000);
 		}, function (err) {
 			res.status(404).end();
 		});

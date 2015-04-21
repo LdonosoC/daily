@@ -99,21 +99,10 @@ appControllers.controller('TaskCtrl', function (
     $http,
     $location,
     $routeParams,
-    MemberSrvc,
-    TaskSrvc
+    TaskSrvc,
+    task
 ) {
-    var taskSlug = $routeParams.task;
-
-    var task = TaskSrvc.get({task: taskSlug});
-
-    task.$promise.then(function (task) {
-        return MemberSrvc.get({member: task.member}).$promise;
-    }).then(function (member) {
-        task.member = member;
-
-        // assign to scope
-        $scope.task = task;
-    });
+    $scope.task = task;
 
     $scope.updateTask = function () {
         TaskSrvc.save({task: taskSlug}, $scope.task);

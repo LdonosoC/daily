@@ -24,13 +24,32 @@ app.config(['$routeProvider', function($routeProvider) {
 			templateUrl: '/html/member.html',
 			controller: 'MemberCtrl',
 			resolve: {
-				member: function (MemberSrvc, $route) {
+				member: function ($route, MemberSrvc) {
 					return MemberSrvc.get({member: $route.current.params.member}).$promise;
 				}
 			}
 		})
 		.when('/task/:task', {
 			templateUrl: '/html/task.html',
-			controller: 'TaskCtrl'
+			controller: 'TaskCtrl',
+			resolve: {
+				task: function ($route, TaskSrvc, MemberSrvc) {
+					var task, taskPromise, memberPromise, taskMemberPromise;
+
+					task = TaskSrvc.get({task: $route.current.params.task});
+					taskPromise = task.$promise;
+
+					memberPromise = taskPromise.then(function (task) {
+						return MemberSrvc.get({member: task.member}).$promise;
+					});
+
+					taskMemberPromise = memberPromise.then(function (member) {
+						task.member = member;
+						return task;
+					});
+
+					return taskMemberPromise;
+				},
+			}
 		});
 }]);
