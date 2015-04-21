@@ -53,9 +53,10 @@ appControllers.controller('MemberCtrl', function (
     $location,
     $routeParams,
     MemberSrvc,
-    TaskSrvc
+    TaskSrvc,
+    member
 ) {
-    $scope.member = MemberSrvc.get({member: $routeParams.member});
+    $scope.member = member;
 
     $scope.createTask = function () {
         var promise = TaskSrvc.save({

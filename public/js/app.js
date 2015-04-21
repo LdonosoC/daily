@@ -17,12 +17,17 @@ app.config(['$routeProvider', function($routeProvider) {
 			resolve: {
 				members: function (MemberSrvc) {
 					return MemberSrvc.query().$promise;
-				}
+				},
 			}
 		})
 		.when('/:member', {
 			templateUrl: '/html/member.html',
-			controller: 'MemberCtrl'
+			controller: 'MemberCtrl',
+			resolve: {
+				member: function (MemberSrvc, $route) {
+					return MemberSrvc.get({member: $route.current.params.member}).$promise;
+				}
+			}
 		})
 		.when('/task/:task', {
 			templateUrl: '/html/task.html',
