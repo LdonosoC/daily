@@ -8,20 +8,22 @@ var ctrl = {
 	create: function (req, res) {
 		var login, title;
 
-		login = req.body.login;
-		title = req.body.title;
+		login	= req.body.login;
+		title 	= req.body.title;
+		date	= req.body.date;
 
 		var memberPromise = Member.findOne({login: req.body.login}).exec();
 
 		memberPromise.then(function (member) {
 			var taskSlug = slug(title + '-' + shortid.generate());
 
-			var task = new Task({
-				title: title,
-				slug: taskSlug.toLowerCase(),
-				member: member._id
-			});
 
+			var task = new Task({
+				title: 	title,
+				slug: 	taskSlug.toLowerCase(),
+				member: member._id,
+				date: 	date
+			});	
 			return task.savePromise();
 		}).then(function (task) {
 			return res.status(201).json(task);
