@@ -6,7 +6,7 @@ var shortid	= require('shortid');
 
 var ctrl = {
 	create: function (req, res) {
-		var login, title;
+		var login, title, date;
 
 		login	= req.body.login;
 		title 	= req.body.title;
