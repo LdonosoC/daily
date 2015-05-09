@@ -7,7 +7,7 @@
 <hr />
 <form ng-submit="createTask()">
 	<input type="text" ng-model="task.title" />
-	<input type="checkbox" ng-model="task.date" ng-init="task.date = date" /> Es para mañana?<br><br>
+	<input type="checkbox" ng-model="task.tomorrow" ng-init="task.date = date" /> Es para mañana?<br><br>
 	<button type="submit">Crear</button>
 </form>
 <ul>
