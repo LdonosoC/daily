@@ -61,6 +61,7 @@ appControllers.controller('MemberCtrl', function (
     var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     $scope.createTask = function () {
+        $scope.task.date = $scope.date;
         if ($scope.task.tomorrow === true){
             $scope.task.date = tomorrowDate;
         };
@@ -74,7 +75,6 @@ appControllers.controller('MemberCtrl', function (
         promise.then(function () {
             $scope.showTasks();
             $scope.task = {};
-            $scope.task.date = $scope.date;
         });
     };
 
