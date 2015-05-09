@@ -98,7 +98,7 @@ appControllers.controller('MemberCtrl', function (
         $scope.tasks = TaskSrvc.query({login: $routeParams.member});
     };
 
-    $scope.showTask();
+    $scope.showTasks();
 
 });
 
