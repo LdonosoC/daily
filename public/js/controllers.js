@@ -131,6 +131,5 @@ appControllers.controller('TaskCtrl', function (
         });
     };
 
-
 });
 
