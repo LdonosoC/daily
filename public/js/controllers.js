@@ -58,11 +58,11 @@ appControllers.controller('MemberCtrl', function (
 ) {
     $scope.member = member;
     $scope.date = new Date();
-    $scope.tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     $scope.createTask = function () {
         if ($scope.task.date === true){
-            $scope.task.date = $scope.tomorrow;
+            $scope.task.date = tomorrowDate;
         };
 
         var promise = TaskSrvc.save({
