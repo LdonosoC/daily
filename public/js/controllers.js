@@ -59,9 +59,15 @@ appControllers.controller('MemberCtrl', function (
     $scope.member = member;
 
     $scope.createTask = function () {
+        $scope.task.date = new Date();
+        if ($scope.task.tomorrow === true){
+            $scope.task.date = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+        };
+
         var promise = TaskSrvc.save({
             login: $routeParams.member,
-            title: $scope.task.title
+            title: $scope.task.title,
+            date: $scope.task.date
         }).$promise;
 
         promise.then(function () {
@@ -88,9 +94,10 @@ appControllers.controller('MemberCtrl', function (
 
     $scope.showTasks = function () {
         $scope.tasks = TaskSrvc.query({login: $routeParams.member});
-    }
+    };
 
     $scope.showTasks();
+
 });
 
 
@@ -121,5 +128,6 @@ appControllers.controller('TaskCtrl', function (
             $location.path('/' + task.member.login);
         });
     };
+
 });
 
