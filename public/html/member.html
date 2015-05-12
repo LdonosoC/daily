@@ -10,8 +10,19 @@
 	<input type="checkbox" ng-model="task.tomorrow" /> Es para mañana?<br><br>
 	<button type="submit">Crear</button>
 </form>
-<ul>
-	<li ng-repeat="task in tasks">
-		<a href="#/task/{{ task.slug }}">{{ task.title }}</a>
-	</li>
-</ul>
+<div ng-show="taskstoday > '0'">
+	Tareas para hoy
+	<ul>
+		<li ng-repeat="task in taskstoday">
+			<a href="#/task/{{ task.slug }}">{{ task.title }}</a>
+		</li>
+	</ul>
+</div>
+<div ng-show="taskstomorrow > '0'">
+	Tareas para mañana
+	<ul>
+		<li ng-repeat="task in taskstomorrow">
+			<a href="#/task/{{ task.slug }}">{{ task.title }}</a>
+		</li>
+	</ul>
+</div>
