@@ -92,8 +92,26 @@ appControllers.controller('MemberCtrl', function (
         });
     };
 
-    $scope.showTasks = function () {
-        $scope.tasks = TaskSrvc.query({login: $routeParams.member});
+   $scope.showTasks = function () {
+        var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toDateString();
+
+        tasks = TaskSrvc.query({login: $routeParams.member}).$promise;
+        
+        tasks.then(function(tasks){
+
+            $scope.taskstomorrow = [];
+            $scope.taskstoday = [];
+
+            for (var i = 0; i < tasks.length; i++){
+
+                var dateTask = new Date(tasks[i].date).toDateString();
+                
+                if(dateTask === tomorrowDate){
+                    $scope.taskstomorrow.push(tasks[i]);
+                    continue;
+                }$scope.taskstoday.push(tasks[i]);
+            };
+        });
     };
 
     $scope.showTasks();
